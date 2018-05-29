@@ -5,6 +5,13 @@ import json
 
 import cleave
 
+@pytest.fixture()
+def load_out():
+    return [
+            {"payload": "things"},
+            {"payload": "stuff"},
+            {"payload": "stuff and things"},
+            ]
 
 @pytest.fixture()
 def single_small():
@@ -54,15 +61,15 @@ def simple_children(simple_name_child, simple_address_child):
 def ss_file(single_small):
     return io.StringIO(single_small)
 
-def test_rend(single_small):
+def test_simple_rend(single_small):
     #print(single_small)
     oo = json.loads(single_small)
-    print("="*10)
-    print(oo)
-    print("="*10)
+    #print("="*10)
+    #print(oo)
+    #print("="*10)
     parent, children = cleave.rend(oo)
-    print(parent)
-    print(children)
+    #print(parent)
+    #print(children)
     assert len(children) == 2
     assert len(parent) == 2
     assert "ranking" in parent
@@ -94,3 +101,41 @@ def test_join(single_small, simple_parent, simple_children):
     for kk in children.keys():
         comp_dicts(children[kk], simple_children[kk])
 
+def test_cp_child():
+    d = {"id": 1,
+            "c": {"hi": "there"},
+            }
+    cp = cleave._cp_child(d['c'], "id", 1)
+
+    assert cp != d['c']
+    assert 'id' in cp
+    assert cp['id'] == 1
+    assert "hi" in cp
+    assert cp['hi'] == d['c']['hi']
+
+def test_cp_child_list(load_out):
+    lo = cleave._cp_child_list(load_out, "id", "__index")
+    assert len(lo) == len(load_out)
+    for ii, li in enumerate(lo):
+        assert 'payload' in li
+        assert li['payload'] == load_out[ii]['payload']
+        assert '__index' in li
+        assert li['__index'] == ii
+
+
+def test_simple_rend_with_list(single_small, load_out):
+    oo = json.loads(single_small)
+    oo['load_out'] = load_out
+
+    parent, children = cleave.rend(oo)
+    #print(parent)
+    #print(children)
+
+    assert len(parent) == 2
+    assert len(children) == 3
+
+    assert 'load_out' in children
+    assert len(children['load_out']) == 3
+    for ii, li in enumerate(children['load_out']):
+        assert '__index' in li
+        assert li['__index'] == ii
