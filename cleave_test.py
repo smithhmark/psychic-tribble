@@ -23,6 +23,34 @@ def single_small():
 }"""
 
 @pytest.fixture()
+def simple_parent():
+    return {
+            "id": "1234",
+            "ranking": 1024
+            }
+@pytest.fixture()
+def simple_name_child():
+    return {
+            "id": "1234",
+        "given": "John",
+        "sur": "Doe"
+        }
+
+@pytest.fixture()
+def simple_address_child():
+    return {
+            "id": "1234",
+        "street": "1 Dr Carlton B Goodlett Pl",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94102"
+        }
+
+@pytest.fixture()
+def simple_children(simple_name_child, simple_address_child):
+    return {"name" : simple_name_child, "address": simple_address_child}
+
+@pytest.fixture()
 def ss_file(single_small):
     return io.StringIO(single_small)
 
@@ -48,5 +76,21 @@ def test_rend(single_small):
     assert children['name']['given'] == 'John'
     assert "address" in children
 
-def test_join():
-    pass
+def _comp_dicts(ld, rd):
+    for kk, vv in ld.items():
+        assert kk in rd
+        assert ld[kk] == rd[kk]
+def comp_dicts(ld, rd):
+    _comp_dicts(ld, rd)
+    _comp_dicts(rd, ld)
+
+def test_join(single_small, simple_parent, simple_children):
+    oo = json.loads(single_small)
+    parent, children = cleave.rend(oo)
+
+    comp_dicts(parent, simple_parent)
+    assert len(children) == len(simple_children)
+    assert sorted(children.keys()) == sorted(simple_children.keys())
+    for kk in children.keys():
+        comp_dicts(children[kk], simple_children[kk])
+

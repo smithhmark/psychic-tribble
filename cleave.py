@@ -1,6 +1,10 @@
 
 def rend(oo, parent_id_field="id"):
-    """
+    """ rend takes a deserialized JSON object and splits out sub-objects
+    first: the JSON object
+    second: the id field in the object, defaults to "id"
+    returns: a tuple of the parent dictionary and a dictionary of the children 
+        that were split out of the source object
     """
     new_parent = {}
     children = {}
