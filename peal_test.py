@@ -47,6 +47,7 @@ def test_spiral(big_input):
     assert len(outs['restaurants']) == 1
     assert len(outs['restaurants_address']) == 1
     assert len(outs['restaurants_grades']) == 2
+    assert '__index' not in outs['restaurants_address']
     for ii, vv in enumerate(outs['restaurants_grades']):
         assert '__index' in vv
         assert vv['__index'] == ii
@@ -55,32 +56,45 @@ def test_spiral(big_input):
         assert '__index' in vv
         assert vv['__index'] == ii
 
-    hi = {
-            'restaurants': [{
-                'id': '58b868503c6f4d322fa8f552',
-                'version': 'asdjasd',
-                'borough': 'Bronx',
-                'cuisine': 'Bakery',
-                'name': 'Morris Park Bake Shop'}],
-            'restaurants_address': [{
-                'id': '58b868503c6f4d322fa8f552',
-                'building': '1007',
-                'coord': '[\xad73.856077, 40.848447]',
-                'street': 'Morris Park Ave',
-                'zipcode': '10462'}],
+    """
+    assert False
+    bye = {
+            'restaurants': [
+                {'id': '58b868503c6f4d322fa8f552',
+                    'version': 'asdjasd',
+                    'borough': 'Bronx',
+                    'cuisine': 'Bakery',
+                    'name': 'Morris Park Bake Shop',
+                    '__index': 0}],
+            'restaurants_address': [
+                {'id': '58b868503c6f4d322fa8f552',
+                    'building': '1007',
+                    'coord': '[\xad73.856077, 40.848447]',
+                    'street': 'Morris Park Ave',
+                    'zipcode': '10462',
+                    '__index': 0}],
             'restaurants_grades': [
-                {
-                    'id': '58b868503c6f4d322fa8f552',
-                    '__index': 0,
+                {'id': '58b868503c6f4d322fa8f552',
+                    '__seq': 0,
+                    '__path': 'restaurants[0]_grades[0]',
                     'date': '2014\xad03\xad03T00:00:00.000Z',
-                    'grade': 'A'
-                }, {
-                    'id': '58b868503c6f4d322fa8f552',
-                    '__index': 1,
+                    'grade': 'A',
+                    '__index': 0},
+                {'id': '58b868503c6f4d322fa8f552',
+                    '__seq': 1,
+                    '__path':
+                    'restaurants[0]_grades[1]',
                     'date': '2011\xad11\xad23T00:00:00.000Z',
-                    'grade': 'A'}],
+                    'grade': 'A',
+                    '__index': 1}],
             'restaurants_grades_score': [
-                {
-                    'id': '58b868503c6f4d322fa8f552', 'x': 1, 'y': 2
-                }, {
-                    'id': '58b868503c6f4d322fa8f552', 'x': 11, 'y': 22}]}
+                {'id': '58b868503c6f4d322fa8f552',
+                    'x': 1,
+                    'y': 2,
+                    '__index': 0},
+                {'id': '58b868503c6f4d322fa8f552',
+                    'x': 11,
+                    'y': 22,
+                    '__index': 1}]}
+    """
+
