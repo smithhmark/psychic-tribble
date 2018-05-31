@@ -98,3 +98,19 @@ def test_spiral(big_input):
                     '__index': 1}]}
     """
 
+def test_reconstruct(big_input):
+    oo = json.loads(big_input)
+    input_str = json.dumps(oo, indent=4, sort_keys=True)
+    print(input_str)
+    outs = peal.spiral_in(oo)
+    #print(json.dumps(outs, indent=4))
+    
+    rcvd = peal.reconstruct(outs)
+    #print(rcvd)
+    rcvd_str = json.dumps(rcvd, indent=4, sort_keys=True)
+    print(rcvd_str)
+    #ilines = input_str.splitlines()
+    #rlines = rcvd_str.splitlines()
+    #assert len(ilines) == len(rlines)
+    assert input_str == rcvd_str
+    #assert False
