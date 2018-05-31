@@ -169,7 +169,7 @@ def _flesh_out(new_parent, order, dicts):
     return new_parent
 
 def reconstruct(ins, parent_id_field='id'):
-    approx_order = sorted(ins.keys())
+    approx_order = sorted(ins.keys(), key=lambda x: (x.count('_'), x))
     indexes = {k:0 for k in approx_order}
     #print(approx_order)
     #print(indexes)
